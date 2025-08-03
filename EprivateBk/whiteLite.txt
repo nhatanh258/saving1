@@ -1,0 +1,128 @@
+title white list thread
+
+participant ChangeMe1
+Customer->Ebank:login fail
+Ebank-->Customer:Khong hien thi banner/ pop up 
+Customer->Ebank:login success
+Ebank->Ebank: Kiem tra white list va non white list 
+Ebank->Ebank:Kiem tra khach hang trong tep white list va check mot so dieu kien ca nhan nhu ten cuoi CCND
+Ebank->DieuKien:chua xac dinh ........
+Ebank->Customer:Hien thi banner/pop up theo thong tin da check
+Customer->Ebank:Chon banner/ pop up o home, quan lythe ---> mo the tin dung moi
+Ebank->Ebank: check thuoc non white list
+Ebank->DieuKien:chua xac dinh ........
+Ebank->ESB: dieu huong sang non whitelist
+Ebank->Ebank: check thuoc white list
+Ebank->Ebank: gui yeu cau check trong white list xem the co du dieu kien ?
+Ebank->Ebank: khong hop le
+Ebank-->ESB:Dieu huong Hien thi loi va End
+Ebank->Ebank: hop le
+Ebank->ESB: Dieu huong huong sang man hinh hien thi cac tinh nang
+Customer->Ebank: Chon button Nhan the ngay
+Ebank->Ebank: Kiem tra khach hang du dieu kien mo the
+Ebank->DieuKien:Tk khong Potential Fraud, Fraud, KH co IC type=Ho chieu, bi tu choi trong 30 days, age<20&>60
+Ebank->Ebank: No
+Ebank-->ESB:Dieu huong Hien thi loi va End
+Ebank->Ebank: Yes
+Ebank->ESB: Check back list
+Ebank->DieuKien: Chua xac dinh ............
+ESB->ESB: Yes
+ESB->Ebank: Hien thi loi
+Ebank-->ESB: End
+ESB->Ebank: No
+Ebank->ESB: Gui yeu cau truy van List TTKT
+ESB->Fcc: Kiem tra va tra ket qua
+Fcc->ESB: HOP LE
+ESB->Ebank: TKTT hop le
+Ebank->Ebank:luu list TKTT hop le
+Ebank->Ebank:Kiem tra dieu kien trong tep TKTT neu co then Next
+Ebank->DieuKien:Kh co thong tin score va bi tu choi torng 30 days 
+Ebank->Ebank: Yes
+Ebank-->ESB:Dieu huong Hien thi loi va End
+Ebank->Ebank: No
+Ebank->DieuKien:Kh co Email ?
+Ebank->Ebank: No
+Ebank->Customer:Hien thi man hinh nhap email
+Customer->Ebank:Nhap thong tin
+Ebank->Ebank: Yes
+Ebank->Customer:Hien thi man hinh nhap thong tin chung
+Ebank->Ebank: Validate thong tin da nhap 
+Ebank->SLS: Kiem tra thong tin phe duyet tu SLS
+SLS->Ebank: check khong duoc phe duyet <30days
+Ebank-->ESB:Dieu huong Hien thi loi va End
+SLS->Ebank: phe duyet cham >30days
+Ebank->ESB:Dieu huong cham diem scoring
+ESB->SLS: SLS ghi nhan diem tien dung
+SLS->Ebank: phe duyet luon
+Ebank->Customer: Hien thi man hinh giao dien nhan the va Tk trich dien tu tu dong
+Customer->Ebank: Chon TKTT va dia chi nhan the
+Ebank->Customer: Hien thi man hinh xac nhan thong tin
+Ebank->Customer: Xac nhan thong tin mo the
+Ebank->Ebank: Tao file hop dong dien tu 
+Ebank->Ebank: Da cai dat Fabio
+Ebank->Ebank:No
+Ebank->Customer:Hien thi  bottom sheet huong dan cai khuon mat
+Ebank->Ebank:Yes
+Ebank->Customer:Hien thi  man hinh nhap ma xac thuc
+Customer->Ebank: Dien ma xac thuc OTP
+Ebank->Ebank:Xac thuc that bai
+Ebank-->ESB:Dieu huong Hien thi loi va End
+Ebank->Ebank:Xac thuc thanh cong
+Ebank->Customer:Hien thi  man hinh xac thuc khuon mat 
+Customer->Ebank:Xac thuc that bai
+Ebank-->ESB:Dieu huong Hien thi loi va End
+Customer->Ebank:Xac thuc thanh cong
+Ebank->Ebank:Chua co TT Score trong DB 
+Ebank->ESB:Gui y/c scoring lai
+ESB->SLS: Check thong tin 
+SLS->ESB: tra ket qua
+Ebank->Ebank:Da co TT Score trong DB 
+Ebank->Ebank: Duoc phe duyet hay khong??
+Ebank->Ebank: Khong phe duyet
+Ebank-->ESB:Dieu huong Hien thi loi va End
+Ebank->Ebank: Duoc phe duyet
+Ebank->ESB:GUI y/c cap han muc
+ESB->SLS: Check va tra ket qua 
+SLS->ESB: nhan ket qua
+ESB->Ebank: that bai
+Ebank-->ESB:Dieu huong Hien thi loi va End
+ESB->Ebank: thanh cong
+Ebank->Customer:Duoc cap han muc 
+Ebank->ESB: Gui yeu cau TKCT
+ESB->Fcc: Xu ly Fcc
+Fcc->ESB: TRA ket qua
+ESB-> Ebank:Time out
+ESB-> Ebank:That bai
+Ebank-->ESB:Dieu huong Hien thi loi va End
+ESB-> Ebank:Thanh cong
+Ebank->ESB: Gui yeu cau mo the
+ESB->SMV: Tao the 
+SMV->Ebank:Time out
+SMV->Ebank:That bai
+Ebank-->ESB: End
+SMV->Ebank:Thanh cong
+Ebank->Customer: hien thi ket qua
+Ebank->ESB:gui y/c luu thong tin
+ESB->CRM: Luu thong tin kh vao CRM
+CRM-->Ebank:end
+Customer->Ebank:click hoan thanh
+Ebank->ESB: Gui yeu cau lay danh sach qua tang
+ESB->Loyalty: yeu cau xu ly va phan hoi
+Loyalty->ESB:Tra ket qua
+Ebank->Ebank: kh co it nhat 1 qua tang
+Ebank-->ESB:Dieu huong luong SDK tang qua mo the va end
+Ebank->Ebank: quay ve man hinh Home
+Ebank-->ESB: END
+
+
+
+
+
+
+
+
+
+
+
+
+
